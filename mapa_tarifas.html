@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_3bf29243ef7cd649654ade7d33b9f46d {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+<div id="tabla_merida" class="tabla-tarifas" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; background-color: white; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); overflow: hidden; font-family: Arial, sans-serif; font-size: 10pt; max-width: 480px;">
+    <div style="background-color: #1e3a8a; color: white; text-align: center; font-weight: bold; padding: 8px; font-size: 11pt;">ZONAS DE FLETES - MÉRIDA</div>
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="background-color: #2c5282; color: white; text-align: center;">
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">DISTANCIA</th>
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">TARIFA</th>
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">CONDICIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 1</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: green;">$0</td><td style="padding: 5px 10px; border: 1px solid #ddd;">Arriba de $1000</td></tr>
+            <tr><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 1</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #d35400;">$100</td><td style="padding: 5px 10px; border: 1px solid #ddd;">Por debajo de $1000</td></tr>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 2 (20km)</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #d35400;">$250</td><td style="padding: 5px 10px; border: 1px solid #ddd;">-</td></tr>
+            <tr><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 3 (Progreso)</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: purple;">$300</td><td style="padding: 5px 10px; border: 1px solid #ddd;">Progreso, Yucalpetén, Chicxulub</td></tr>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd; font-weight: bold;">Zonas Adicionales</td><td colspan="2" style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-style: italic;">(Km de ida + km de vuelta - 20) x 6</td></tr>
+        </tbody>
+    </table>
+    <div style="background-color: #fef08a; color: #713f12; text-align: center; font-weight: bold; font-size: 9pt; padding: 5px; border-top: 1px solid #ddd;">TODOS LOS PRECIOS SON + IVA</div>
+</div>
+    
+<div id="tabla_cancun" class="tabla-tarifas" style="display:none; position: fixed; bottom: 30px; right: 30px; z-index: 9999; background-color: white; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); overflow: hidden; font-family: Arial, sans-serif; font-size: 10pt; max-width: 520px;">
+    <div style="background-color: #1e3a8a; color: white; text-align: center; font-weight: bold; padding: 8px; font-size: 11pt;">ZONAS DE FLETES - CANCÚN</div>
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="background-color: #2c5282; color: white; text-align: center;">
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">DISTANCIA</th>
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">TARIFA</th>
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">CONDICIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 1 (Verde)</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: green;">$0 / $100</td><td style="padding: 5px 10px; border: 1px solid #ddd;">> $1000 gratis / < $1000 tarifa $100</td></tr>
+            <tr><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 2 (Morado)</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #8e44ad;">$500</td><td style="padding: 5px 10px; border: 1px solid #ddd;">-</td></tr>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 3 (Naranja)</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #e67e22;">$300</td><td style="padding: 5px 10px; border: 1px solid #ddd;">Punta Sam, Z. Continental, Isla Blanca</td></tr>
+            <tr><td style="padding: 5px 10px; border: 1px solid #ddd; font-weight: bold;">Zonas Adicionales</td><td colspan="2" style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-style: italic;">(Km de ida + km de vuelta - 20) x 6</td></tr>
+        </tbody>
+    </table>
+    <div style="background-color: #fef08a; color: #713f12; text-align: center; font-weight: bold; font-size: 9pt; padding: 5px; border-top: 1px solid #ddd;">TODOS LOS PRECIOS SON + IVA</div>
+</div>
+    
+<div id="tabla_playa" class="tabla-tarifas" style="display:none; position: fixed; bottom: 30px; right: 30px; z-index: 9999; background-color: white; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); overflow: hidden; font-family: Arial, sans-serif; font-size: 10pt; max-width: 520px;">
+    <div style="background-color: #1e3a8a; color: white; text-align: center; font-weight: bold; padding: 8px; font-size: 11pt;">ZONAS DE FLETES - PLAYA DEL CARMEN</div>
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="background-color: #2c5282; color: white; text-align: center;">
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">DISTANCIA</th>
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">TARIFA</th>
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">CONDICIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 1</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: green;">$0</td><td style="padding: 5px 10px; border: 1px solid #ddd;">Arriba de $1000</td></tr>
+            <tr><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 1</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #d35400;">$100</td><td style="padding: 5px 10px; border: 1px solid #ddd;">Por debajo de $1000</td></tr>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd;">5ta Avenida y Zona Hotelera</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #8e44ad;">$300</td><td style="padding: 5px 10px; border: 1px solid #ddd;">-</td></tr>
+            <tr><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 2 (20km)</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #d35400;">$250</td><td style="padding: 5px 10px; border: 1px solid #ddd;">-</td></tr>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 3</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #8e44ad;">$300</td><td style="padding: 5px 10px; border: 1px solid #ddd;">Puerto Morelos, Xpuha, Akumal</td></tr>
+            <tr><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona Foránea</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #c0392b;">$400</td><td style="padding: 5px 10px; border: 1px solid #ddd;">Xcacel, Balam Canché, Tulum</td></tr>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd; font-weight: bold;">Zonas Adicionales</td><td colspan="2" style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-size: 9pt; font-style: italic;">(Km de ida + km de vuelta - 20) x 6</td></tr>
+        </tbody>
+    </table>
+    <div style="background-color: #fef08a; color: #713f12; text-align: center; font-weight: bold; font-size: 9pt; padding: 5px; border-top: 1px solid #ddd;">TODOS LOS PRECIOS SON + IVA</div>
+</div>
+    
+<div id="tabla_campeche" class="tabla-tarifas" style="display:none; position: fixed; bottom: 30px; right: 30px; z-index: 9999; background-color: white; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); overflow: hidden; font-family: Arial, sans-serif; font-size: 10pt; max-width: 520px;">
+    <div style="background-color: #1e3a8a; color: white; text-align: center; font-weight: bold; padding: 8px; font-size: 11pt;">ZONAS DE FLETES - CAMPECHE</div>
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="background-color: #2c5282; color: white; text-align: center;">
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">DISTANCIA</th>
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">TARIFA</th>
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">CONDICIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 1</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: green;">$0 / $100</td><td style="padding: 5px 10px; border: 1px solid #ddd;">> $1000 gratis / < $1000 tarifa $100</td></tr>
+            <tr><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 2 (30km)</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #d35400;">$250</td><td style="padding: 5px 10px; border: 1px solid #ddd;">Nilchí, Checoy, Pocyaxum, Choulul</td></tr>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd; font-weight: bold;">Zonas Adicionales</td><td colspan="2" style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-style: italic;">(Km de ida + km de vuelta - 20) x 6</td></tr>
+        </tbody>
+    </table>
+    <div style="background-color: #fef08a; color: #713f12; text-align: center; font-weight: bold; font-size: 9pt; padding: 5px; border-top: 1px solid #ddd;">TODOS LOS PRECIOS SON + IVA</div>
+</div>
+    
+<div id="tabla_valladolid" class="tabla-tarifas" style="display:none; position: fixed; bottom: 30px; right: 30px; z-index: 9999; background-color: white; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); overflow: hidden; font-family: Arial, sans-serif; font-size: 10pt; max-width: 480px;">
+    <div style="background-color: #1e3a8a; color: white; text-align: center; font-weight: bold; padding: 8px; font-size: 11pt;">ZONAS DE FLETES - VALLADOLID</div>
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="background-color: #2c5282; color: white; text-align: center;">
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">DISTANCIA</th>
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">TARIFA</th>
+                <th style="padding: 6px 10px; border: 1px solid #ddd;">CONDICIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 1</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: green;">$0 / $100</td><td style="padding: 5px 10px; border: 1px solid #ddd;">> $1000 gratis / < $1000 tarifa $100</td></tr>
+            <tr><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 2</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #d35400;">$250</td><td style="padding: 5px 10px; border: 1px solid #ddd;">-</td></tr>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 3</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #8e44ad;">$300</td><td style="padding: 5px 10px; border: 1px solid #ddd;">-</td></tr>
+            <tr><td style="padding: 5px 10px; border: 1px solid #ddd;">Zona 4</td><td style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #e67e22;">$350</td><td style="padding: 5px 10px; border: 1px solid #ddd;">-</td></tr>
+            <tr style="background-color: #f8fafc;"><td style="padding: 5px 10px; border: 1px solid #ddd; font-weight: bold;">Zonas Adicionales</td><td colspan="2" style="padding: 5px 10px; border: 1px solid #ddd; text-align: center; font-style: italic;">(Km de ida + km de vuelta - 20) x 6</td></tr>
+        </tbody>
+    </table>
+    <div style="background-color: #fef08a; color: #713f12; text-align: center; font-weight: bold; font-size: 9pt; padding: 5px; border-top: 1px solid #ddd;">TODOS LOS PRECIOS SON + IVA</div>
+</div>
+    
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    function actualizarTablas() {
+        setTimeout(function() {
+            var radios = document.querySelectorAll('input.leaflet-control-layers-selector');
+            radios.forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    var labelText = this.parentNode.textContent.trim();
+                    
+                    // Ocultar todas las tablas
+                    var tablas = document.querySelectorAll('.tabla-tarifas');
+                    tablas.forEach(function(t) { t.style.display = 'none'; });
+                    
+                    // Mostrar la tabla correspondiente a la capa seleccionada
+                    if (labelText.includes("Mérida")) {
+                        document.getElementById('tabla_merida').style.display = 'block';
+                    } else if (labelText.includes("Cancún")) {
+                        document.getElementById('tabla_cancun').style.display = 'block';
+                    } else if (labelText.includes("Playa del Carmen")) {
+                        document.getElementById('tabla_playa').style.display = 'block';
+                    } else if (labelText.includes("Campeche")) {
+                        document.getElementById('tabla_campeche').style.display = 'block';
+                    } else if (labelText.includes("Valladolid")) {
+                        document.getElementById('tabla_valladolid').style.display = 'block';
+                    }
+                });
+            });
+        }, 1000);
+    }
+    actualizarTablas();
+});
+</script>
+    
+            <div class="folium-map" id="map_3bf29243ef7cd649654ade7d33b9f46d" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_3bf29243ef7cd649654ade7d33b9f46d = L.map(
+                "map_3bf29243ef7cd649654ade7d33b9f46d",
+                {
+                    center: [20.96737, -89.62375],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 9,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_23e3ca083d7930f29d08086059fe5d58 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=cb1_3l1a_1_7b53a4b0945c3568009484b4",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_23e3ca083d7930f29d08086059fe5d58.addTo(map_3bf29243ef7cd649654ade7d33b9f46d);
+        
+    
+            var feature_group_62113676be2d19e5acf248d4610b0863 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_49967d3ad6ad3e2c390c68e569b9aca3 = L.marker(
+                [20.96737, -89.62375],
+                {
+}
+            ).addTo(feature_group_62113676be2d19e5acf248d4610b0863);
+        
+    
+            var icon_db83ba9635114f81a289628375e7a86b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_cd93ab3a2e118887041c6dee1afc3f2a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9a3049846bcceba5f01f99c8e2104d7c = $(`<div id="html_9a3049846bcceba5f01f99c8e2104d7c" style="width: 100.0%; height: 100.0%;"><b>Centro de Mérida</b></div>`)[0];
+                popup_cd93ab3a2e118887041c6dee1afc3f2a.setContent(html_9a3049846bcceba5f01f99c8e2104d7c);
+            
+        
+
+        marker_49967d3ad6ad3e2c390c68e569b9aca3.bindPopup(popup_cd93ab3a2e118887041c6dee1afc3f2a)
+        ;
+
+        
+    
+    
+                marker_49967d3ad6ad3e2c390c68e569b9aca3.setIcon(icon_db83ba9635114f81a289628375e7a86b);
+            
+    
+            var circle_db06f8f563104447895ec8ce46a00dc5 = L.circle(
+                [20.96737, -89.62375],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.08, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 17000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_62113676be2d19e5acf248d4610b0863);
+        
+    
+            var marker_b426ed1f65aa3440b22f67bbcee1f52a = L.marker(
+                [20.91737, -89.70375],
+                {
+}
+            ).addTo(feature_group_62113676be2d19e5acf248d4610b0863);
+        
+    
+            var div_icon_94a55d2c338da99e06a88ae43b0f83c1 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 14pt; font-weight: bold; color: green; background-color: rgba(255,255,255,0.8); padding: 2px 5px; border-radius: 4px; border: 1px solid green;\"\u003eZONA 1\u003c/div\u003e",
+  "iconSize": [150, 36],
+  "className": "empty",
+});
+        
+    
+                marker_b426ed1f65aa3440b22f67bbcee1f52a.setIcon(div_icon_94a55d2c338da99e06a88ae43b0f83c1);
+            
+    
+            var circle_334cbc77757d442bf077d2f8cc493f3f = L.circle(
+                [20.96737, -89.62375],
+                {"bubblingMouseEvents": true, "color": "#d35400", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d35400", "fillOpacity": 0.05, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 32000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_62113676be2d19e5acf248d4610b0863);
+        
+    
+            var marker_42f5f43ae973d15b99d94fedeaf23b51 = L.marker(
+                [21.117369999999998, -89.84375],
+                {
+}
+            ).addTo(feature_group_62113676be2d19e5acf248d4610b0863);
+        
+    
+            var div_icon_2993361a0142dd56524d540cd0f73d07 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 14pt; font-weight: bold; color: #d35400; background-color: rgba(255,255,255,0.85); padding: 2px 5px; border-radius: 4px; border: 1px solid orange;\"\u003eZONA 2\u003c/div\u003e",
+  "iconSize": [150, 36],
+  "className": "empty",
+});
+        
+    
+                marker_42f5f43ae973d15b99d94fedeaf23b51.setIcon(div_icon_2993361a0142dd56524d540cd0f73d07);
+            
+    
+            var circle_404da6be738bc9d247117be89e527720 = L.circle(
+                [21.2854, -89.6631],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_62113676be2d19e5acf248d4610b0863);
+        
+    
+            var marker_8cd5870a59c0fd493713091dd24325bf = L.marker(
+                [21.3054, -89.7131],
+                {
+}
+            ).addTo(feature_group_62113676be2d19e5acf248d4610b0863);
+        
+    
+            var div_icon_30978c9dc364184d1c730d3ad1edc1a9 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 11pt; font-weight: bold; color: purple; background-color: rgba(255,255,255,0.85); padding: 2px 5px; border-radius: 4px; border: 1px solid purple;\"\u003eZONA ESPECIAL (PROGRESO)\u003c/div\u003e",
+  "iconSize": [180, 36],
+  "className": "empty",
+});
+        
+    
+                marker_8cd5870a59c0fd493713091dd24325bf.setIcon(div_icon_30978c9dc364184d1c730d3ad1edc1a9);
+            
+    
+            feature_group_62113676be2d19e5acf248d4610b0863.addTo(map_3bf29243ef7cd649654ade7d33b9f46d);
+        
+    
+            var feature_group_4ec775b42d2d5ea5c056f8115dcfb223 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_4ca1b312d13c8b6e14be8f31e4cc17b4 = L.marker(
+                [21.161575794933448, -86.82611841098961],
+                {
+}
+            ).addTo(feature_group_4ec775b42d2d5ea5c056f8115dcfb223);
+        
+    
+            var icon_0129a35767c53b7b2a93fcdaa16f7d4d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3f81295041908d42ef02284eb531b2b6 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_baaedc8ccde4d1ead4bbcf2a7427e798 = $(`<div id="html_baaedc8ccde4d1ead4bbcf2a7427e798" style="width: 100.0%; height: 100.0%;"><b>Centro de Cancún</b></div>`)[0];
+                popup_3f81295041908d42ef02284eb531b2b6.setContent(html_baaedc8ccde4d1ead4bbcf2a7427e798);
+            
+        
+
+        marker_4ca1b312d13c8b6e14be8f31e4cc17b4.bindPopup(popup_3f81295041908d42ef02284eb531b2b6)
+        ;
+
+        
+    
+    
+                marker_4ca1b312d13c8b6e14be8f31e4cc17b4.setIcon(icon_0129a35767c53b7b2a93fcdaa16f7d4d);
+            
+    
+            var marker_5063fc690e79313a2120f2338d9ee410 = L.marker(
+                [21.143433785824158, -86.89289836294482],
+                {
+}
+            ).addTo(feature_group_4ec775b42d2d5ea5c056f8115dcfb223);
+        
+    
+            var icon_3b105abbfa3c5ab65ce2e05c8e5373a2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "store",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_53f90e38396ab69ac3b360da35321c92 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a5f7ab944768d8f94f48ef762c62e58c = $(`<div id="html_a5f7ab944768d8f94f48ef762c62e58c" style="width: 100.0%; height: 100.0%;"><b>Sucursal La Casa del Herrero Cancún</b></div>`)[0];
+                popup_53f90e38396ab69ac3b360da35321c92.setContent(html_a5f7ab944768d8f94f48ef762c62e58c);
+            
+        
+
+        marker_5063fc690e79313a2120f2338d9ee410.bindPopup(popup_53f90e38396ab69ac3b360da35321c92)
+        ;
+
+        
+    
+    
+                marker_5063fc690e79313a2120f2338d9ee410.setIcon(icon_3b105abbfa3c5ab65ce2e05c8e5373a2);
+            
+    
+            var circle_638f48ddef49b79fa3ad4a985024a1ac = L.circle(
+                [21.161575794933448, -86.82611841098961],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.08, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 17000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_4ec775b42d2d5ea5c056f8115dcfb223);
+        
+    
+            var marker_c69ee9218b402d0521a94285b6dac1a3 = L.marker(
+                [21.08157579493345, -86.9061184109896],
+                {
+}
+            ).addTo(feature_group_4ec775b42d2d5ea5c056f8115dcfb223);
+        
+    
+            var div_icon_3b4c27221cb789b9e24c1abb96af6fff = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 11pt; font-weight: bold; color: green; background-color: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 4px; border: 1px solid green; text-align: center;\"\u003eZONA 1\u003c/div\u003e",
+  "iconSize": [100, 30],
+  "className": "empty",
+});
+        
+    
+                marker_c69ee9218b402d0521a94285b6dac1a3.setIcon(div_icon_3b4c27221cb789b9e24c1abb96af6fff);
+            
+    
+            var poly_line_61c581e3f5532100bc4bb0398a0771e2 = L.polyline(
+                [[21.386801020158675, -86.82611841098961], [21.386750959316245, -86.83121018157547], [21.38660079904302, -86.83629968866421], [21.38635060609129, -86.84138466976492], [21.3860004916819, -86.84646286439867], [21.385550611454807, -86.85153201510339], [21.385001165399892, -86.8565898684374], [21.384352397768062, -86.86163417598115], [21.38360459696266, -86.86666269533676], [21.382758095411265, -86.87167319112483], [21.38181326941792, -86.87666343597814], [21.380770538995826, -86.88163121153187], [21.37963036768067, -86.88657430940964], [21.37839326232452, -86.89149053220537], [21.377059772870542, -86.89637769445997], [21.375630492108513, -86.90123362363298], [21.374106055411303, -86.90605616106825], [21.372487140452428, -86.91084316295367], [21.3707744669048, -86.91559250127406], [21.3689687961208, -86.92030206475725], [21.367070930793822, -86.92496975981254], [21.365081714601452, -86.92959351146146], [21.36300203183042, -86.93417126426019], [21.36083280698348, -86.93870098321317], [21.35857500436846, -86.94318065467787], [21.35622962766957, -86.94760828725992], [21.353797719501223, -86.95198191269826], [21.35128036094456, -86.9562995867402], [21.348678671066857, -86.96055939000573], [21.34599380642407, -86.96475942884071], [21.343226960546676, -86.96889783615867], [21.340379363409117, -86.9729727722709], [21.337452280883028, -86.97698242570412], [21.334447014174494, -86.98092501400588], [21.331364899245624, -86.98479878453688], [21.32820730622065, -86.98860201525007], [21.32497563877687, -86.9923330154562], [21.321671333520626, -86.99599012657538], [21.318295859348712, -86.99957172287444], [21.31485071679536, -87.00307621218953], [21.31133743736521, -87.00650203663399], [21.307757582852485, -87.00984767329085], [21.30411274464672, -87.01311163488988], [21.300404543025305, -87.01629247046864], [21.296634626433235, -87.01938876601763], [21.292804670750293, -87.02239914510871], [21.288916378546052, -87.02532226950714], [21.284971478323016, -87.02815683976638], [21.280971723748245, -87.03090159580576], [21.276918892873752, -87.03355531747067], [21.27281478734612, -87.03611682507494], [21.268661231605567, -87.03858497992525], [21.264460072074932, -87.04095868482734], [21.260213176338848, -87.04323688457379], [21.255922432313543, -87.04541856641302], [21.251589747407564, -87.0475027604996], [21.24721704767388, -87.04948854032529], [21.24280627695366, -87.05137502313097], [21.238359396012157, -87.05316137029905], [21.233878381667072, -87.05484678772625], [21.22936522590978, -87.05643052617663], [21.22482193501981, -87.05791188161467], [21.220250528672967, -87.05929019551819], [21.215653039043513, -87.06056485517115], [21.21103150990078, -87.061735293936], [21.206387995700634, -87.06280099150554], [21.201724560672172, -87.0637614741343], [21.197043277900118, -87.06461631484903], [21.192346228403228, -87.06536513363864], [21.187635500209204, -87.06600759762297], [21.182913187426482, -87.06654342120093], [21.17818138931331, -87.06697236617735], [21.173442209344547, -87.06729424186891], [21.168697754276593, -87.0675089051889], [21.163950133210832, -87.06761626071082], [21.159201456656064, -87.06761626071082], [21.154453835590303, -87.0675089051889], [21.14970938052235, -87.06729424186891], [21.144970200553587, -87.06697236617735], [21.140238402440414, -87.06654342120093], [21.135516089657692, -87.06600759762297], [21.13080536146367, -87.06536513363864], [21.126108311966778, -87.06461631484903], [21.121427029194724, -87.0637614741343], [21.11676359416626, -87.06280099150554], [21.112120079966115, -87.061735293936], [21.107498550823383, -87.06056485517115], [21.10290106119393, -87.05929019551819], [21.098329654847085, -87.05791188161467], [21.093786363957115, -87.05643052617663], [21.089273208199824, -87.05484678772625], [21.08479219385474, -87.05316137029905], [21.080345312913234, -87.05137502313097], [21.075934542193014, -87.04948854032529], [21.07156184245933, -87.0475027604996], [21.067229157553353, -87.04541856641302], [21.062938413528048, -87.04323688457379], [21.058691517791964, -87.04095868482734], [21.05449035826133, -87.03858497992525], [21.050336802520775, -87.03611682507494], [21.046232696993144, -87.03355531747067], [21.04217986611865, -87.03090159580576], [21.03818011154388, -87.02815683976638], [21.034235211320844, -87.02532226950714], [21.030346919116603, -87.02239914510871], [21.02651696343366, -87.01938876601763], [21.02274704684159, -87.01629247046864], [21.01903884522018, -87.01311163488988], [21.01539400701441, -87.00984767329085], [21.011814152501685, -87.00650203663399], [21.008300873071537, -87.00307621218953], [21.004855730518184, -86.99957172287444], [21.00148025634627, -86.99599012657538], [20.998175951090026, -86.9923330154562], [20.994944283646245, -86.98860201525007], [20.99178669062127, -86.98479878453688], [20.9887045756924, -86.98092501400588], [20.985699308983868, -86.97698242570412], [20.98277222645778, -86.9729727722709], [20.97992462932022, -86.96889783615867], [20.977157783442827, -86.96475942884071], [20.97447291880004, -86.96055939000573], [20.971871228922335, -86.9562995867402], [20.969353870365673, -86.95198191269826], [20.966921962197326, -86.94760828725992], [20.964576585498435, -86.94318065467787], [20.962318782883415, -86.93870098321317], [20.960149558036477, -86.93417126426017], [20.958069875265444, -86.92959351146146], [20.956080659073073, -86.92496975981254], [20.954182793746096, -86.92030206475725], [20.952377122962098, -86.91559250127406], [20.950664449414468, -86.91084316295367], [20.949045534455593, -86.90605616106825], [20.947521097758383, -86.90123362363298], [20.946091816996354, -86.89637769445997], [20.944758327542377, -86.89149053220537], [20.943521222186227, -86.88657430940964], [20.94238105087107, -86.88163121153187], [20.941338320448978, -86.87666343597814], [20.94039349445563, -86.87167319112483], [20.939546992904237, -86.86666269533676], [20.938799192098834, -86.86163417598115], [20.938150424467004, -86.8565898684374], [20.93760097841209, -86.85153201510339], [20.937151098184994, -86.84646286439867], [20.936800983775605, -86.84138466976492], [20.936550790823876, -86.83629968866421], [20.93640063055065, -86.83121018157547], [20.93635056970822, -86.82611841098961]],
+                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(feature_group_4ec775b42d2d5ea5c056f8115dcfb223);
+        
+    
+            var marker_0c774c4baa814db1de2e68f4114d1010 = L.marker(
+                [21.181575794933448, -87.0461184109896],
+                {
+}
+            ).addTo(feature_group_4ec775b42d2d5ea5c056f8115dcfb223);
+        
+    
+            var div_icon_ddaeb62839873f40d325fed7c1ea427b = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 11pt; font-weight: bold; color: #8e44ad; background-color: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 4px; border: 1px solid purple; text-align: center;\"\u003eZONA 2\u003c/div\u003e",
+  "iconSize": [100, 30],
+  "className": "empty",
+});
+        
+    
+                marker_0c774c4baa814db1de2e68f4114d1010.setIcon(div_icon_ddaeb62839873f40d325fed7c1ea427b);
+            
+    
+            var poly_line_d759ce41b2d6e15dc96f154b0868f21d = L.polyline(
+                [[21.50391813727579, -86.82611841098961], [21.5038420447953, -86.83385790228013], [21.50361380118, -86.84159395305501], [21.50323350789337, -86.8493231243281], [21.502701333991094, -86.85704198017139], [21.502017516045914, -86.86474708924254], [21.501182358042445, -86.87243502631024], [21.50019623124206, -86.88010237377675], [21.49905957401785, -86.88774572319728], [21.497772891659732, -86.89536167679515], [21.49633675614984, -86.90294684897219], [21.494751805908262, -86.91049786781385], [21.49301874550922, -86.91801137658807], [21.491138345367876, -86.92548403523756], [21.48911144139783, -86.93291252186455], [21.486938934639547, -86.94029353420751], [21.484621790859787, -86.94762379110915], [21.482161040122296, -86.954900033975], [21.4795577763299, -86.96211902822199], [21.47681315673822, -86.96927756471642], [21.473928401441217, -86.97637246120046], [21.470904792828815, -86.98340056370684], [21.467743675016845, -86.99035874796088], [21.464446453249497, -86.9972439207694], [21.46101459327467, -87.00405302139578], [21.457449620692355, -87.01078302292049], [21.453753120276467, -87.01743093358675], [21.449926735270335, -87.02399379813052], [21.445972166656233, -87.03046869909411], [21.441891172399192, -87.03685275812327], [21.437685566665554, -87.04314313724659], [21.433357219016465, -87.04933704013716], [21.42890805357681, -87.05543171335566], [21.42434004817984, -87.06142444757434], [21.41965523348796, -87.06731257878145], [21.41485569209, -87.07309348946549], [21.40994355757545, -87.07876460977882], [21.40492101358596, -87.08432341867999], [21.39979029284465, -87.08976744505455], [21.394553676163554, -87.09509426881348], [21.389213491429725, -87.10030152196906], [21.383772112570387, -87.10538688968751], [21.37823195849762, -87.11034811131802], [21.37259549203307, -87.11518298139775], [21.366865218813125, -87.11988935063219], [21.361043686175055, -87.12446512685064], [21.355133482024605, -87.12890827593625], [21.349137233685592, -87.1332168227303], [21.34305760673194, -87.13738885191016], [21.33689730380271, -87.14142250884083], [21.33065906340071, -87.1453160003993], [21.32434565867507, -87.14906759577177], [21.3179598961885, -87.15267562722296], [21.31150461466966, -87.15613849083756], [21.30498268375119, -87.1594546472332], [21.298397002694106, -87.1626226222448], [21.29175049909891, -87.16564100757985], [21.285046127604176, -87.16850846144447], [21.27828686857309, -87.17122370913995], [21.271475726768557, -87.1737855436293], [21.264615730017475, -87.17619282607389], [21.257709927864717, -87.1784444863397], [21.250761390217516, -87.18053952347306], [21.243773205980748, -87.18247700614556], [21.236748481683797, -87.18425607306813], [21.22969034009957, -87.18587593337384], [21.22260191885631, -87.18733586696953], [21.215486369042786, -87.18863522485594], [21.208346853807516, -87.18977342941614], [21.2011865469526, -87.19074997467233], [21.19400863152286, -87.19156442651082], [21.186816298390834, -87.19221642287498], [21.17961274483832, -87.19270567392616], [21.172401173135025, -87.19303196217253], [21.16518478911507, -87.19319514256584], [21.157966800751826, -87.19319514256584], [21.15075041673187, -87.19303196217253], [21.143538845028576, -87.19270567392616], [21.136335291476062, -87.19221642287498], [21.129142958344037, -87.19156442651082], [21.121965042914297, -87.19074997467233], [21.11480473605938, -87.18977342941614], [21.10766522082411, -87.18863522485594], [21.100549671010587, -87.18733586696953], [21.093461249767326, -87.18587593337384], [21.0864031081831, -87.18425607306813], [21.079378383886148, -87.18247700614556], [21.07239019964938, -87.18053952347306], [21.06544166200218, -87.1784444863397], [21.05853585984942, -87.17619282607389], [21.05167586309834, -87.1737855436293], [21.044864721293806, -87.17122370913995], [21.03810546226272, -87.16850846144447], [21.031401090767986, -87.16564100757985], [21.02475458717279, -87.1626226222448], [21.018168906115704, -87.1594546472332], [21.011646975197237, -87.15613849083756], [21.00519169367839, -87.15267562722296], [20.998805931191825, -87.14906759577177], [20.992492526466187, -87.1453160003993], [20.986254286064185, -87.14142250884083], [20.980093983134957, -87.13738885191016], [20.974014356181303, -87.1332168227303], [20.96801810784229, -87.12890827593625], [20.96210790369184, -87.12446512685064], [20.95628637105377, -87.11988935063219], [20.950556097833825, -87.11518298139775], [20.944919631369277, -87.11034811131802], [20.93937947729651, -87.10538688968751], [20.93393809843717, -87.10030152196906], [20.928597913703342, -87.09509426881348], [20.923361297022247, -87.08976744505455], [20.918230576280937, -87.08432341867999], [20.913208032291447, -87.07876460977882], [20.908295897776895, -87.0730934894655], [20.903496356378938, -87.06731257878145], [20.898811541687056, -87.06142444757434], [20.894243536290087, -87.05543171335566], [20.88979437085043, -87.04933704013716], [20.885466023201342, -87.04314313724659], [20.881260417467704, -87.03685275812327], [20.877179423210663, -87.03046869909411], [20.87322485459656, -87.02399379813052], [20.86939846959043, -87.01743093358675], [20.86570196917454, -87.01078302292049], [20.862136996592227, -87.00405302139578], [20.8587051366174, -86.9972439207694], [20.85540791485005, -86.99035874796088], [20.85224679703808, -86.98340056370684], [20.84922318842568, -86.97637246120046], [20.846338433128675, -86.96927756471642], [20.843593813536994, -86.96211902822199], [20.8409905497446, -86.954900033975], [20.83852979900711, -86.94762379110915], [20.83621265522735, -86.94029353420753], [20.834040148469064, -86.93291252186455], [20.83201324449902, -86.92548403523756], [20.830132844357674, -86.91801137658807], [20.828399783958634, -86.91049786781385], [20.826814833717055, -86.90294684897219], [20.825378698207164, -86.89536167679515], [20.824092015849047, -86.88774572319728], [20.822955358624835, -86.88010237377675], [20.82196923182445, -86.87243502631024], [20.821134073820982, -86.86474708924254], [20.8204502558758, -86.85704198017139], [20.819918081973526, -86.8493231243281], [20.819537788686898, -86.84159395305501], [20.819309545071597, -86.83385790228013], [20.819233452591106, -86.82611841098961]],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#e67e22", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(feature_group_4ec775b42d2d5ea5c056f8115dcfb223);
+        
+    
+            var marker_cacfb65dfec8fffee3faf7b28900d2a5 = L.marker(
+                [21.181575794933448, -87.16611841098961],
+                {
+}
+            ).addTo(feature_group_4ec775b42d2d5ea5c056f8115dcfb223);
+        
+    
+            var div_icon_e04e2c348c5dd7ce7214f6498a29320a = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 11pt; font-weight: bold; color: #e67e22; background-color: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 4px; border: 1px solid orange; text-align: center;\"\u003eZONA 3\u003c/div\u003e",
+  "iconSize": [100, 30],
+  "className": "empty",
+});
+        
+    
+                marker_cacfb65dfec8fffee3faf7b28900d2a5.setIcon(div_icon_e04e2c348c5dd7ce7214f6498a29320a);
+            
+    
+            var feature_group_062295372d3a8616430e88b1fda8067c = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_7672f3f795e27b257a2c0d38b5182317 = L.marker(
+                [20.62956, -87.07389],
+                {
+}
+            ).addTo(feature_group_062295372d3a8616430e88b1fda8067c);
+        
+    
+            var icon_0ae0c16b428ad26919c26bff9797a507 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "map-marker",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c713d3bddc5d94fe20d38d8affe393e4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b5b0ad449ba63800d26182bbaad98ac2 = $(`<div id="html_b5b0ad449ba63800d26182bbaad98ac2" style="width: 100.0%; height: 100.0%;"><b>Playa del Carmen</b><br>Punto central</div>`)[0];
+                popup_c713d3bddc5d94fe20d38d8affe393e4.setContent(html_b5b0ad449ba63800d26182bbaad98ac2);
+            
+        
+
+        marker_7672f3f795e27b257a2c0d38b5182317.bindPopup(popup_c713d3bddc5d94fe20d38d8affe393e4)
+        ;
+
+        
+    
+    
+                marker_7672f3f795e27b257a2c0d38b5182317.setIcon(icon_0ae0c16b428ad26919c26bff9797a507);
+            
+    
+            var circle_d92ca0692ea77e331a783bb9c836c7e6 = L.circle(
+                [20.62956, -87.07389],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_062295372d3a8616430e88b1fda8067c);
+        
+    
+        var popup_d29d04288aa02ea89f4cdec3c42d8245 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_dd2759552add51636ce6d934bc88d7a1 = $(`<div id="html_dd2759552add51636ce6d934bc88d7a1" style="width: 100.0%; height: 100.0%;">Zona 1 - Playa del Carmen</div>`)[0];
+                popup_d29d04288aa02ea89f4cdec3c42d8245.setContent(html_dd2759552add51636ce6d934bc88d7a1);
+            
+        
+
+        circle_d92ca0692ea77e331a783bb9c836c7e6.bindPopup(popup_d29d04288aa02ea89f4cdec3c42d8245)
+        ;
+
+        
+    
+    
+            var marker_8b5dec966547ea2910dc5d92d4e855ef = L.marker(
+                [20.549560000000003, -87.12389],
+                {
+}
+            ).addTo(feature_group_062295372d3a8616430e88b1fda8067c);
+        
+    
+            var div_icon_a14db776aa21f6dbf1fec742b3e0a1cf = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 14pt; font-weight: bold; color: green; background-color: rgba(255,255,255,0.85); padding: 2px 5px; border-radius: 4px; border: 1px solid green;\"\u003eZONA 1\u003c/div\u003e",
+  "iconSize": [150, 36],
+  "className": "empty",
+});
+        
+    
+                marker_8b5dec966547ea2910dc5d92d4e855ef.setIcon(div_icon_a14db776aa21f6dbf1fec742b3e0a1cf);
+            
+    
+            var circle_b8079d53bfda7c40ab4b8b2bd5d66be2 = L.circle(
+                [20.62956, -87.07389],
+                {"bubblingMouseEvents": true, "color": "#d35400", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d35400", "fillOpacity": 0.05, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9500, "stroke": true, "weight": 2}
+            ).addTo(feature_group_062295372d3a8616430e88b1fda8067c);
+        
+    
+        var popup_1d0c2cd291a8f4c067525ea7e0fde858 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_22f939a30ff81bbaec59af4d77e1c856 = $(`<div id="html_22f939a30ff81bbaec59af4d77e1c856" style="width: 100.0%; height: 100.0%;">Zona 2 (15 km)</div>`)[0];
+                popup_1d0c2cd291a8f4c067525ea7e0fde858.setContent(html_22f939a30ff81bbaec59af4d77e1c856);
+            
+        
+
+        circle_b8079d53bfda7c40ab4b8b2bd5d66be2.bindPopup(popup_1d0c2cd291a8f4c067525ea7e0fde858)
+        ;
+
+        
+    
+    
+            var marker_2e0f8c186c57729195f3594a74f05514 = L.marker(
+                [20.68956, -87.15389],
+                {
+}
+            ).addTo(feature_group_062295372d3a8616430e88b1fda8067c);
+        
+    
+            var div_icon_fc14be13fc8d950e6aa501ece4e91104 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 11pt; font-weight: bold; color: #d35400; background-color: rgba(255,255,255,0.85); padding: 2px 5px; border-radius: 4px; border: 1px solid orange;\"\u003eZONA 2\u003c/div\u003e",
+  "iconSize": [100, 30],
+  "className": "empty",
+});
+        
+    
+                marker_2e0f8c186c57729195f3594a74f05514.setIcon(div_icon_fc14be13fc8d950e6aa501ece4e91104);
+            
+    
+            var circle_b65e8f8b91ab256f8c05cb2690503bdb = L.circle(
+                [20.62956, -87.07389],
+                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.03, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 11000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_062295372d3a8616430e88b1fda8067c);
+        
+    
+        var popup_d447960df0a0ff459e2aab578c6119e3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_04abc1e948bca2c0680c1de5f63b6799 = $(`<div id="html_04abc1e948bca2c0680c1de5f63b6799" style="width: 100.0%; height: 100.0%;">Zona 3 (23 km)</div>`)[0];
+                popup_d447960df0a0ff459e2aab578c6119e3.setContent(html_04abc1e948bca2c0680c1de5f63b6799);
+            
+        
+
+        circle_b65e8f8b91ab256f8c05cb2690503bdb.bindPopup(popup_d447960df0a0ff459e2aab578c6119e3)
+        ;
+
+        
+    
+    
+            var marker_d23b8c6c380d6155e85266b25899a158 = L.marker(
+                [20.749560000000002, -87.21389],
+                {
+}
+            ).addTo(feature_group_062295372d3a8616430e88b1fda8067c);
+        
+    
+            var div_icon_08d24abf5af475b308c1f303e5cc4324 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 11pt; font-weight: bold; color: #8e44ad; background-color: rgba(255,255,255,0.85); padding: 2px 5px; border-radius: 4px; border: 1px solid purple;\"\u003eZONA 3\u003c/div\u003e",
+  "iconSize": [100, 30],
+  "className": "empty",
+});
+        
+    
+                marker_d23b8c6c380d6155e85266b25899a158.setIcon(div_icon_08d24abf5af475b308c1f303e5cc4324);
+            
+    
+            var poly_line_7727b71be5b1d7f6e05af8d4fef9da49 = L.polyline(
+                [[20.8465, -86.8825], [20.76, -87.05], [20.70260573446494, -87.14675814647816], [20.45, -87.38], [20.2114, -87.4654]],
+                {"bubblingMouseEvents": true, "color": "#d35400", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#d35400", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(feature_group_062295372d3a8616430e88b1fda8067c);
+        
+    
+        var popup_866c30799c4bca21f59586dfe88e1272 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_fc5546905eff95e7ff00e94b20e336af = $(`<div id="html_fc5546905eff95e7ff00e94b20e336af" style="width: 100.0%; height: 100.0%;">Zona 2 (Área Ovalada Puerto Morelos - Tulum)</div>`)[0];
+                popup_866c30799c4bca21f59586dfe88e1272.setContent(html_fc5546905eff95e7ff00e94b20e336af);
+            
+        
+
+        poly_line_7727b71be5b1d7f6e05af8d4fef9da49.bindPopup(popup_866c30799c4bca21f59586dfe88e1272)
+        ;
+
+        
+    
+    
+            var marker_1a95bc4a9a5ad9d481e87a6126ad7756 = L.marker(
+                [20.70260573446494, -87.14675814647816],
+                {
+}
+            ).addTo(feature_group_062295372d3a8616430e88b1fda8067c);
+        
+    
+            var icon_473ba910eba44bb4ba04d2218485f296 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shield",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9636084fe585b9a34b6514cffff31cad = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c2dc56fe2a4c00b3257158753d181cc7 = $(`<div id="html_c2dc56fe2a4c00b3257158753d181cc7" style="width: 100.0%; height: 100.0%;"><b>Caseta Límite</b><br>Límite operativo de zona</div>`)[0];
+                popup_9636084fe585b9a34b6514cffff31cad.setContent(html_c2dc56fe2a4c00b3257158753d181cc7);
+            
+        
+
+        marker_1a95bc4a9a5ad9d481e87a6126ad7756.bindPopup(popup_9636084fe585b9a34b6514cffff31cad)
+        ;
+
+        
+    
+    
+                marker_1a95bc4a9a5ad9d481e87a6126ad7756.setIcon(icon_473ba910eba44bb4ba04d2218485f296);
+            
+    
+            var marker_7291b67726e307951dc00acec23398d3 = L.marker(
+                [20.78, -87.18],
+                {
+}
+            ).addTo(feature_group_062295372d3a8616430e88b1fda8067c);
+        
+    
+            var div_icon_3d6b6a17fa038be54a66cc829d260356 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 14pt; font-weight: bold; color: #d35400; background-color: rgba(255,255,255,0.85); padding: 2px 5px; border-radius: 4px; border: 1px solid orange;\"\u003eZONA 2\u003c/div\u003e",
+  "iconSize": [150, 36],
+  "className": "empty",
+});
+        
+    
+                marker_7291b67726e307951dc00acec23398d3.setIcon(div_icon_3d6b6a17fa038be54a66cc829d260356);
+            
+    
+            var feature_group_c4effbf1f4e27a7e22161ef91c6dc55e = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_ea344992fc223859cc567d8422efe55f = L.marker(
+                [19.827473871273067, -90.53551397630379],
+                {
+}
+            ).addTo(feature_group_c4effbf1f4e27a7e22161ef91c6dc55e);
+        
+    
+            var icon_8688f91bce9a8745f3e43621ab63a64e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "map-marker",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e314aac547c1324cd036bb530e14a289 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_046dcca5e1e04771e7a3e3ac717d7944 = $(`<div id="html_046dcca5e1e04771e7a3e3ac717d7944" style="width: 100.0%; height: 100.0%;"><b>San Francisco de Campeche</b></div>`)[0];
+                popup_e314aac547c1324cd036bb530e14a289.setContent(html_046dcca5e1e04771e7a3e3ac717d7944);
+            
+        
+
+        marker_ea344992fc223859cc567d8422efe55f.bindPopup(popup_e314aac547c1324cd036bb530e14a289)
+        ;
+
+        
+    
+    
+                marker_ea344992fc223859cc567d8422efe55f.setIcon(icon_8688f91bce9a8745f3e43621ab63a64e);
+            
+    
+            var circle_6eee0928c83713719b73d2a997b6b145 = L.circle(
+                [19.827473871273067, -90.53551397630379],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.08, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_c4effbf1f4e27a7e22161ef91c6dc55e);
+        
+    
+            var poly_line_9afff21bf958ded80769c4518c3c2b8b = L.polyline(
+                [[20.093638128843935, -90.5854034525324], [20.09532182993179, -90.57389303299357], [20.096565210571256, -90.5623195213799], [20.09736622674481, -90.55070194361137], [20.097723561646443, -90.53905939804915], [20.097636627846388, -90.52741102409942], [20.097105568256808, -90.5157759707498], [20.096131255896843, -90.50417336508991], [20.09471529245746, -90.49262228086798], [20.092860005668392, -90.48114170713512], [20.090568445471536, -90.46975051702894], [20.087844379007088, -90.45846743674754], [20.08469228442069, -90.44731101476516], [20.0811173435017, -90.43629959134006], [20.07712543316475, -90.42545126836454], [20.07272311578858, -90.41478387960689], [20.067917628428017, -90.40431496139416], [20.062716870916827, -90.39406172378384], [20.057129392881045, -90.38404102227186], [20.05116437968406, -90.37426933008356], [20.044831637326627, -90.36476271109306], [20.038141576326602, -90.3555367934155], [20.03110519460487, -90.34660674371567], [20.023734059405655, -90.33798724227529], [20.016040288280927, -90.32969245885975], [20.008036529170088, -90.32173602942424], [19.9997359396078, -90.31413103369722], [19.991152165094057, -90.30688997367852], [19.982299316662083, -90.30002475308697], [19.97319194768092, -90.29354665779172], [19.963845029930884, -90.28746633725913], [19.954273928991142, -90.28179378704593], [19.944494378979957, -90.27653833236728], [19.934522456689056, -90.27170861276697], [19.92437455515468, -90.26731256791462], [19.914067356708774, -90.2633574245535], [19.903617805554536, -90.25984968462043], [19.893043079911557, -90.25679511455705], [19.882360563776196, -90.25419873583026], [19.871587818343677, -90.25206481667733], [19.86074255313893, -90.25039686508933], [19.84984259690353, -90.24919762304415], [19.838905868286712, -90.24846906199906], [19.827950346388523, -90.24821237964966], [19.816994041203657, -90.24842799796103], [19.806054964014475, -90.24911556247406], [19.795151097781897, -90.25027394288813], [19.784300367582862, -90.25190123491922], [19.77352061114297, -90.25399476343046], [19.762829549512666, -90.25655108682973], [19.75224475793529, -90.25956600272751], [19.741783636954786, -90.26303455484513], [19.731463383810592, -90.26695104116256], [19.7213009641668, -90.27130902329208], [19.71131308422194, -90.27610133706243], [19.701516163245355, -90.28132010429616], [19.691926306585238, -90.28695674576069], [19.68255927919274, -90.29300199527195], [19.67343047970567, -90.29944591492713], [19.664554915134353, -90.30627791144188], [19.655947176191344, -90.31348675356475], [19.64762141330545, -90.32106059054053], [19.639591313359585, -90.32898697159187], [19.631870077190616, -90.33725286638743], [19.624470397888267, -90.34584468646257], [19.617404439928706, -90.35474830755786], [19.61068381917711, -90.36394909283804], [19.604319583792137, -90.37343191695398], [19.598322196063634, -90.38318119090737], [19.592701515213477, -90.3931808876779], [19.587466781187807, -90.4034145685703], [19.582626599467307, -90.41386541023832], [19.57818892692048, -90.42451623234084], [19.574161058723192, -90.43534952578509], [19.570549616366012, -90.44634748151006], [19.567360536768994, -90.45749201976331], [19.564599062521875, -90.46876481982245], [19.562269733265666, -90.48014735011311], [19.56037637822986, -90.49162089867322], [19.55892210993748, -90.503166603914], [19.55790931908835, -90.51476548562694], [19.557339670628963, -90.52639847618566], [19.55721410101546, -90.53804645189165], [19.55753281667416, -90.54969026441194], [19.558295293662223, -90.56131077225756], [19.559500278528947, -90.57288887225053], [19.56114579037637, -90.584405530928], [19.563229124115686, -90.59584181583159], [19.565746854914202, -90.60717892663104], [19.568694843825476, -90.61839822603024], [19.572068244593428, -90.62948127040556], [19.575861511619177, -90.64040984012563], [19.580068409077576, -90.65116596950296], [19.584682021168387, -90.66173197632808], [19.589694763485312, -90.67209049093769], [19.595098395484143, -90.68222448476892], [19.60088403402955, -90.69211729835298], [19.60704216799824, -90.70175266870199], [19.61356267391448, -90.71111475604393], [19.620434832592263, -90.72018816986206]],
+                {"bubblingMouseEvents": true, "color": "#d35400", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#d35400", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(feature_group_c4effbf1f4e27a7e22161ef91c6dc55e);
+        
+    
+            var poly_line_2230c8a9361544e52ef2a2983de804d4 = L.polyline(
+                [[20.226720257629367, -90.6103481906467], [20.229245809261155, -90.59308256133846], [20.231110880220353, -90.57572229391796], [20.23231240448068, -90.55829592726516], [20.23284840683313, -90.54083210892182], [20.23271800613305, -90.52335954799723], [20.231921416748676, -90.50590696797282], [20.23045994820873, -90.48850305948298], [20.22833600304966, -90.47117643315008], [20.225553072866056, -90.4539555725508], [20.222115732570767, -90.43686878739153], [20.2180296328741, -90.41994416696942], [20.213301490994503, -90.40320953399585], [20.207939079616015, -90.3866923988582], [20.20195121411059, -90.37041991439492], [20.195347738046337, -90.35441883125844], [20.188139507005488, -90.33871545393936], [20.180338370738706, -90.32333559752387], [20.17195715368503, -90.3083045452559], [20.163009633889555, -90.29364700697344], [20.15351052035341, -90.2793870784877], [20.14347542885337, -90.26554820197136], [20.13292085627077, -90.25215312742161], [20.12186415347195, -90.23922387526103], [20.110323496784858, -90.22678170013774], [20.098317858118598, -90.21484705598446], [20.08586697377517, -90.20343956239394], [20.072991312004554, -90.19257797236588], [20.05971203935659, -90.18228014147857], [20.046050985884847, -90.1725629985357], [20.03203060925979, -90.16344251773681], [20.017673957850178, -90.15493369241699], [20.003004632833402, -90.14705051039903], [19.98804674939705, -90.13980593099856], [19.972824897095492, -90.13321186372002], [19.957364099426623, -90.12727914867835], [19.94168977269527, -90.12201753877876], [19.925827684230804, -90.11743568368368], [19.909803910027758, -90.11354111559349], [19.893644791878984, -90.1103402368641], [19.877376894071862, -90.10783830948209], [19.861026959718767, -90.10603944641434], [19.844621866793535, -90.1049466048467], [19.828188583946247, -90.1045615813226], [19.811754126168953, -90.10488500878965], [19.79534551038518, -90.1059163555592], [19.77898971103631, -90.10765392618029], [19.762713615737763, -90.11009486422694], [19.74654398107792, -90.11323515699378], [19.730507388632464, -90.1170696420927], [19.714630201266402, -90.12159201593937], [19.698938519795643, -90.12679484411579], [19.683458140079356, -90.13266957359195], [19.668214510613666, -90.13920654678623], [19.653232690696377, -90.14639501744175], [19.6385373092315, -90.15422316829233], [19.62415252424132, -90.16267813048914], [19.61010198315258, -90.17174600475603], [19.59640878392197, -90.1814118842388], [19.583095437064994, -90.19165987901091], [19.57018382865048, -90.20247314219523], [19.557695184321645, -90.2138338976589], [19.545650034402847, -90.22572346923592], [19.53406818014939, -90.23812231142924], [19.52296866119587, -90.25101004154196], [19.512369724256523, -90.26436547318488], [19.502288793129132, -90.27816665110517], [19.49274244005167, -90.29239088727907], [19.483746358458916, -90.30701479820915], [19.47531533718368, -90.32201434336494], [19.46746323614518, -90.33736486470356], [19.460202963564427, -90.35304112720557], [19.453546454744185, -90.36901736035936], [19.447504652448252, -90.38526730052573], [19.44208748891248, -90.4017642341132], [19.437303869516956, -90.41848104149307], [19.43316165814628, -90.4353902415818], [19.429667664261967, -90.45246403701779], [19.426827631708257, -90.46967435985793], [19.424646229269687, -90.4869929177191], [19.42312704299599, -90.50439124028851], [19.422272570306912, -90.5218407261266], [19.422084215886656, -90.53931268968556], [19.42256228937471, -90.556778408466], [19.423706004856797, -90.57420917023444], [19.425513482156887, -90.59157632022391], [19.427981749928023, -90.60885130824009], [19.431106750536998, -90.6260057355955], [19.434883346734768, -90.64301140179467], [19.43930533010168, -90.65984035089346], [19.44436543125361, -90.67646491745644], [19.450055331792235, -90.69285777203655], [19.456365677979832, -90.70899196610254], [19.463286096116047, -90.72484097634023], [19.470805209591436, -90.74037874825464], [19.478910657589683, -90.75557973900149], [19.487589115407793, -90.7704189593776], [19.496826316360828, -90.78487201490108], [19.506607075235184, -90.798915145914], [19.51691531325186, -90.81252526664119]],
+                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(feature_group_c4effbf1f4e27a7e22161ef91c6dc55e);
+        
+    
+            var poly_line_a206c2e7f192d9a7c8586477ac018f56 = L.polyline(
+                [[20.359802386414803, -90.635292928761], [20.363169788590515, -90.61227208968334], [20.36565654986945, -90.58912506645602], [20.367258582216554, -90.56588991091895], [20.36797325201982, -90.5426048197945], [20.367799384419712, -90.51930807189505], [20.366737265240545, -90.49603796519582], [20.36478864052062, -90.47283275387605], [20.361956713641856, -90.44973058543216], [20.35824614006372, -90.42676943796647], [20.35366301967, -90.40398705775411], [20.34821488674111, -90.38142089719129], [20.341910697568316, -90.35910805322654], [20.33476081573033, -90.33708520637634], [20.32677699505643, -90.31538856042529], [20.31797236030409, -90.29405378291], [20.308361385582963, -90.27311594648455], [20.297959870560586, -90.2526094712639], [20.286784914489022, -90.23256806823991], [20.27485488809505, -90.21302468386334], [20.26218940338019, -90.19401144588234], [20.248809281380137, -90.17555961052722], [20.234736517936668, -90.15769951112755], [20.219994247538246, -90.14046050824679], [20.204606705288786, -90.12387094141573], [20.18859918706711, -90.10795808254468], [20.171998007942534, -90.09274809109066], [20.15483045891505, -90.07826597105324], [20.137124762051098, -90.06453552987016], [20.118910024088777, -90.05157933927967], [20.1002161885887, -90.03941869821449], [20.081073986709217, -90.02807359778807], [20.061514886686847, -90.01756268843077], [20.041571042105044, -90.00790324923015], [20.0212752390363, -89.99911115952543], [20.000660842144477, -89.9912008728032], [19.979761739836004, -89.98418539293708], [19.958612288550047, -89.97807625281033], [19.93724725627932, -89.97288349535673], [19.915701765414287, -89.96861565705088], [19.894011235004793, -89.96527975387487], [19.872211322534, -89.96288126978453], [19.850337865300357, -89.96142414769434], [19.828426821503975, -89.96091078299553], [19.806514211134246, -89.96134201961827], [19.784636056755886, -89.96271714864433], [19.762828324290723, -89.96503390947247], [19.74112686389266, -89.96828849353466], [19.71956735101287, -89.9724755505571], [19.698185227752266, -89.97758819735569], [19.677015644597518, -89.98361802915123], [19.6560934026365, -89.99055513338647], [19.63545289634812, -89.99838810602134], [19.61512805706053, -90.00710407028036], [19.595152297170813, -90.01668869782105], [19.575558455217642, -90.02712623228851], [19.556378741897404, -90.03839951521759], [19.537644687112415, -90.05049001424011], [19.51938708813827, -90.06337785355048], [19.50163595899564, -90.07704184657996], [19.48442048110962, -90.09145953082572], [19.46776895533784, -90.10660720477728], [19.451708755446106, -90.12245996687997], [19.436266283108164, -90.13899175647106], [19.42146692450347, -90.15617539662135], [19.407335008584344, -90.1739826388119], [19.393893767081153, -90.19238420937229], [19.381165296311206, -90.21134985760416], [19.369170520854198, -90.23084840551094], [19.357929159153883, -90.250847799052], [19.347459691102546, -90.27131516083682], [19.337779327661547, -90.29221684417284], [19.328903982567887, -90.3135184883779], [19.320848246173316, -90.33518507526637], [19.313625361458953, -90.35718098671633], [19.30724720226492, -90.37947006322281], [19.301724253770683, -90.40201566334113], [19.297065595258264, -90.42478072392245], [19.293278885186652, -90.44772782104266], [19.290370348601897, -90.47081923152422], [19.28834476690363, -90.49401699495009], [19.28720546998486, -90.51728297606755], [19.286954330757855, -90.54057892747949], [19.287591762075255, -90.56386655252007], [19.289116716051375, -90.58710756821132], [19.291526685784827, -90.61026376819729], [19.294817709479673, -90.63329708555219], [19.298984376958305, -90.6561696553594], [19.304019838555334, -90.6788438769583], [19.309915816377885, -90.70128247575668], [19.31666261791379, -90.72344856450732], [19.32424915196529, -90.74530570394747], [19.332662946882085, -90.76681796270212], [19.341890171063707, -90.78794997635238], [19.351915655697557, -90.80866700557159], [19.362722919695223, -90.82893499323406], [19.374294196786035, -90.84872062040219], [19.386610464723418, -90.86799136110018], [19.399651476555892, -90.88671553578406], [19.41339579391146, -90.9048623634203]],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#c0392b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(feature_group_c4effbf1f4e27a7e22161ef91c6dc55e);
+        
+    
+            var marker_48e4ce22ce19ba6473a99a9377045ab4 = L.marker(
+                [19.847473871273067, -90.41551397630379],
+                {
+}
+            ).addTo(feature_group_c4effbf1f4e27a7e22161ef91c6dc55e);
+        
+    
+            var div_icon_4577fdc1e252a67a4c181990c8522a51 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 10pt; font-weight: bold; color: green; background: white; padding: 1px 4px; border: 1px solid green; border-radius: 3px; text-align: center;\"\u003eZONA 1\u003c/div\u003e",
+  "iconSize": [70, 24],
+  "className": "empty",
+});
+        
+    
+                marker_48e4ce22ce19ba6473a99a9377045ab4.setIcon(div_icon_4577fdc1e252a67a4c181990c8522a51);
+            
+    
+            var marker_bcc0040671028435d6963cc1e653a62b = L.marker(
+                [20.047473871273066, -90.31551397630379],
+                {
+}
+            ).addTo(feature_group_c4effbf1f4e27a7e22161ef91c6dc55e);
+        
+    
+            var div_icon_a6c2b8cba6d85cc8b9cf9dfdb33293fa = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 10pt; font-weight: bold; color: #d35400; background: white; padding: 1px 4px; border: 1px solid orange; border-radius: 3px; text-align: center;\"\u003eZONA 2\u003c/div\u003e",
+  "iconSize": [70, 24],
+  "className": "empty",
+});
+        
+    
+                marker_bcc0040671028435d6963cc1e653a62b.setIcon(div_icon_a6c2b8cba6d85cc8b9cf9dfdb33293fa);
+            
+    
+            var marker_364934fb1327efa6e1490dfe9a374832 = L.marker(
+                [20.17747387127307, -90.20551397630379],
+                {
+}
+            ).addTo(feature_group_c4effbf1f4e27a7e22161ef91c6dc55e);
+        
+    
+            var div_icon_13e32b2182e8c2fffc78400b2b297272 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 10pt; font-weight: bold; color: #8e44ad; background: white; padding: 1px 4px; border: 1px solid purple; border-radius: 3px; text-align: center;\"\u003eZONA 3\u003c/div\u003e",
+  "iconSize": [70, 24],
+  "className": "empty",
+});
+        
+    
+                marker_364934fb1327efa6e1490dfe9a374832.setIcon(div_icon_13e32b2182e8c2fffc78400b2b297272);
+            
+    
+            var marker_ad1c2cb0f85f8d554ae1dbe497aa5d22 = L.marker(
+                [20.307473871273068, -90.09551397630379],
+                {
+}
+            ).addTo(feature_group_c4effbf1f4e27a7e22161ef91c6dc55e);
+        
+    
+            var div_icon_2c3ff67dfba5901c7362aa9e56fedd0d = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 10pt; font-weight: bold; color: #c0392b; background: white; padding: 1px 4px; border: 1px solid darkred; border-radius: 3px; text-align: center;\"\u003eZONA 4\u003c/div\u003e",
+  "iconSize": [70, 24],
+  "className": "empty",
+});
+        
+    
+                marker_ad1c2cb0f85f8d554ae1dbe497aa5d22.setIcon(div_icon_2c3ff67dfba5901c7362aa9e56fedd0d);
+            
+    
+            var feature_group_526ddfc06a46d5a2fc136a103243e490 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_b4ea9d2b6d8819c9e7baa924e2d10c58 = L.marker(
+                [20.690288583032522, -88.20174045760247],
+                {
+}
+            ).addTo(feature_group_526ddfc06a46d5a2fc136a103243e490);
+        
+    
+            var icon_96b8ec62c266c15cb55bfd4301e09cb1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "home",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_625065b1dce34e9c9b684cf1bec70eeb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c64a523204b0eefad1051fa3bdaf2fe9 = $(`<div id="html_c64a523204b0eefad1051fa3bdaf2fe9" style="width: 100.0%; height: 100.0%;"><b>Centro de Valladolid</b></div>`)[0];
+                popup_625065b1dce34e9c9b684cf1bec70eeb.setContent(html_c64a523204b0eefad1051fa3bdaf2fe9);
+            
+        
+
+        marker_b4ea9d2b6d8819c9e7baa924e2d10c58.bindPopup(popup_625065b1dce34e9c9b684cf1bec70eeb)
+        ;
+
+        
+    
+    
+                marker_b4ea9d2b6d8819c9e7baa924e2d10c58.setIcon(icon_96b8ec62c266c15cb55bfd4301e09cb1);
+            
+    
+            var marker_1bb6beb6572aa9afc31b1e823d2a7d6c = L.marker(
+                [20.680208993816482, -88.20064580344041],
+                {
+}
+            ).addTo(feature_group_526ddfc06a46d5a2fc136a103243e490);
+        
+    
+            var icon_bcc72d67734c985788dd858004c7d925 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "store",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_14e121b329bb4e1932c158d0a3166eac = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2d211d7f7c8baf263318a537d9dcce21 = $(`<div id="html_2d211d7f7c8baf263318a537d9dcce21" style="width: 100.0%; height: 100.0%;"><b>Sucursal Valladolid</b></div>`)[0];
+                popup_14e121b329bb4e1932c158d0a3166eac.setContent(html_2d211d7f7c8baf263318a537d9dcce21);
+            
+        
+
+        marker_1bb6beb6572aa9afc31b1e823d2a7d6c.bindPopup(popup_14e121b329bb4e1932c158d0a3166eac)
+        ;
+
+        
+    
+    
+                marker_1bb6beb6572aa9afc31b1e823d2a7d6c.setIcon(icon_bcc72d67734c985788dd858004c7d925);
+            
+    
+            var circle_5658572e20847890d6ec20283d90eb50 = L.circle(
+                [20.690288583032522, -88.20174045760247],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.08, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 17000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_526ddfc06a46d5a2fc136a103243e490);
+        
+    
+            var marker_d45df45224c4a74f618ade2d4843b9f7 = L.marker(
+                [20.640288583032522, -88.28174045760247],
+                {
+}
+            ).addTo(feature_group_526ddfc06a46d5a2fc136a103243e490);
+        
+    
+            var div_icon_a304fc63cc2a3429680022d00a5ffdc8 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 12pt; font-weight: bold; color: green; background-color: rgba(255,255,255,0.8); padding: 2px 5px; border-radius: 4px; border: 1px solid green;\"\u003eZONA 1\u003c/div\u003e",
+  "iconSize": [150, 36],
+  "className": "empty",
+});
+        
+    
+                marker_d45df45224c4a74f618ade2d4843b9f7.setIcon(div_icon_a304fc63cc2a3429680022d00a5ffdc8);
+            
+    
+            var circle_b06a8c3d34e6e84444815c9a430b0548 = L.circle(
+                [20.690288583032522, -88.20174045760247],
+                {"bubblingMouseEvents": true, "color": "#d35400", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d35400", "fillOpacity": 0.05, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 28000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_526ddfc06a46d5a2fc136a103243e490);
+        
+    
+            var marker_92938a1a072fffe8e93b140382eee3a8 = L.marker(
+                [20.82028858303252, -88.40174045760247],
+                {
+}
+            ).addTo(feature_group_526ddfc06a46d5a2fc136a103243e490);
+        
+    
+            var div_icon_9ca4006dcf53d51578bdfd363e22c657 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 12pt; font-weight: bold; color: #d35400; background-color: rgba(255,255,255,0.85); padding: 2px 5px; border-radius: 4px; border: 1px solid orange;\"\u003eZONA 2\u003c/div\u003e",
+  "iconSize": [150, 36],
+  "className": "empty",
+});
+        
+    
+                marker_92938a1a072fffe8e93b140382eee3a8.setIcon(div_icon_9ca4006dcf53d51578bdfd363e22c657);
+            
+    
+            var circle_ecce670537e872f73212b966db398939 = L.circle(
+                [20.690288583032522, -88.20174045760247],
+                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.03, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 39000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_526ddfc06a46d5a2fc136a103243e490);
+        
+    
+            var marker_96c308ecd0458d8a09a788df77f15421 = L.marker(
+                [20.950288583032524, -88.49174045760248],
+                {
+}
+            ).addTo(feature_group_526ddfc06a46d5a2fc136a103243e490);
+        
+    
+            var div_icon_7b671d79e61ccc0ba30ee44b66f8250b = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 12pt; font-weight: bold; color: #8e44ad; background-color: rgba(255,255,255,0.85); padding: 2px 5px; border-radius: 4px; border: 1px solid purple;\"\u003eZONA 3\u003c/div\u003e",
+  "iconSize": [150, 36],
+  "className": "empty",
+});
+        
+    
+                marker_96c308ecd0458d8a09a788df77f15421.setIcon(div_icon_7b671d79e61ccc0ba30ee44b66f8250b);
+            
+    
+            var layer_control_0db7c02b60700da8da78ac71b10f37b5_layers = {
+                base_layers : {
+                    "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=cb1_3l1a_1_7b53a4b0945c3568009484b4" : tile_layer_23e3ca083d7930f29d08086059fe5d58,
+                },
+                overlays :  {
+                    "M\u00e9rida y Progreso" : feature_group_62113676be2d19e5acf248d4610b0863,
+                    "Canc\u00fan" : feature_group_4ec775b42d2d5ea5c056f8115dcfb223,
+                    "Playa del Carmen / Riviera Maya" : feature_group_062295372d3a8616430e88b1fda8067c,
+                    "San Francisco de Campeche" : feature_group_c4effbf1f4e27a7e22161ef91c6dc55e,
+                    "Valladolid" : feature_group_526ddfc06a46d5a2fc136a103243e490,
+                },
+            };
+            let layer_control_0db7c02b60700da8da78ac71b10f37b5 = L.control.layers(
+                layer_control_0db7c02b60700da8da78ac71b10f37b5_layers.base_layers,
+                layer_control_0db7c02b60700da8da78ac71b10f37b5_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_3bf29243ef7cd649654ade7d33b9f46d);
+
+        
+    
+            tile_layer_23e3ca083d7930f29d08086059fe5d58.addTo(map_3bf29243ef7cd649654ade7d33b9f46d);
+        
+    
+                marker_49967d3ad6ad3e2c390c68e569b9aca3.setIcon(icon_db83ba9635114f81a289628375e7a86b);
+            
+    
+                marker_b426ed1f65aa3440b22f67bbcee1f52a.setIcon(div_icon_94a55d2c338da99e06a88ae43b0f83c1);
+            
+    
+                marker_42f5f43ae973d15b99d94fedeaf23b51.setIcon(div_icon_2993361a0142dd56524d540cd0f73d07);
+            
+    
+                marker_8cd5870a59c0fd493713091dd24325bf.setIcon(div_icon_30978c9dc364184d1c730d3ad1edc1a9);
+            
+    
+            feature_group_62113676be2d19e5acf248d4610b0863.addTo(map_3bf29243ef7cd649654ade7d33b9f46d);
+        
+    
+                marker_4ca1b312d13c8b6e14be8f31e4cc17b4.setIcon(icon_0129a35767c53b7b2a93fcdaa16f7d4d);
+            
+    
+                marker_5063fc690e79313a2120f2338d9ee410.setIcon(icon_3b105abbfa3c5ab65ce2e05c8e5373a2);
+            
+    
+                marker_c69ee9218b402d0521a94285b6dac1a3.setIcon(div_icon_3b4c27221cb789b9e24c1abb96af6fff);
+            
+    
+                marker_0c774c4baa814db1de2e68f4114d1010.setIcon(div_icon_ddaeb62839873f40d325fed7c1ea427b);
+            
+    
+                marker_cacfb65dfec8fffee3faf7b28900d2a5.setIcon(div_icon_e04e2c348c5dd7ce7214f6498a29320a);
+            
+    
+                marker_7672f3f795e27b257a2c0d38b5182317.setIcon(icon_0ae0c16b428ad26919c26bff9797a507);
+            
+    
+                marker_8b5dec966547ea2910dc5d92d4e855ef.setIcon(div_icon_a14db776aa21f6dbf1fec742b3e0a1cf);
+            
+    
+                marker_2e0f8c186c57729195f3594a74f05514.setIcon(div_icon_fc14be13fc8d950e6aa501ece4e91104);
+            
+    
+                marker_d23b8c6c380d6155e85266b25899a158.setIcon(div_icon_08d24abf5af475b308c1f303e5cc4324);
+            
+    
+                marker_1a95bc4a9a5ad9d481e87a6126ad7756.setIcon(icon_473ba910eba44bb4ba04d2218485f296);
+            
+    
+                marker_7291b67726e307951dc00acec23398d3.setIcon(div_icon_3d6b6a17fa038be54a66cc829d260356);
+            
+    
+                marker_ea344992fc223859cc567d8422efe55f.setIcon(icon_8688f91bce9a8745f3e43621ab63a64e);
+            
+    
+                marker_48e4ce22ce19ba6473a99a9377045ab4.setIcon(div_icon_4577fdc1e252a67a4c181990c8522a51);
+            
+    
+                marker_bcc0040671028435d6963cc1e653a62b.setIcon(div_icon_a6c2b8cba6d85cc8b9cf9dfdb33293fa);
+            
+    
+                marker_364934fb1327efa6e1490dfe9a374832.setIcon(div_icon_13e32b2182e8c2fffc78400b2b297272);
+            
+    
+                marker_ad1c2cb0f85f8d554ae1dbe497aa5d22.setIcon(div_icon_2c3ff67dfba5901c7362aa9e56fedd0d);
+            
+    
+                marker_b4ea9d2b6d8819c9e7baa924e2d10c58.setIcon(icon_96b8ec62c266c15cb55bfd4301e09cb1);
+            
+    
+                marker_1bb6beb6572aa9afc31b1e823d2a7d6c.setIcon(icon_bcc72d67734c985788dd858004c7d925);
+            
+    
+                marker_d45df45224c4a74f618ade2d4843b9f7.setIcon(div_icon_a304fc63cc2a3429680022d00a5ffdc8);
+            
+    
+                marker_92938a1a072fffe8e93b140382eee3a8.setIcon(div_icon_9ca4006dcf53d51578bdfd363e22c657);
+            
+    
+                marker_96c308ecd0458d8a09a788df77f15421.setIcon(div_icon_7b671d79e61ccc0ba30ee44b66f8250b);
+            
+</script>
+</html>
